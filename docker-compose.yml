@@ -1,0 +1,55 @@
+version: '3.3'
+
+services:
+    php:
+        # note you need to manually build this image from base dockerfile above FIRST!
+        image: yourdockername/base-php-nginx
+        build: .
+        volumes:
+            # used delegated mode here on docker for mac for faster disk I/O
+            - .:/var/www/app:delegated
+            - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx/nginx-site.conf:/etc/nginx/conf.d/default.conf
+              # mount in dev certs if you want to dev over ssl
+              #- ./dev-cert.crt:/etc/nginx/ssl/cert.crt
+              #- ./dev-key.pem:/etc/nginx/ssl/key.pem
+        entrypoint: /usr/local/bin/docker-php-entrypoint-dev
+        command: ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+        ports:
+            - "8080:80"
+            - "8443:443"
+            - "9001:9001"
+        depends_on:
+            - mysql
+        environment:
+            APP_NAME: Laravel
+            APP_ENV: local
+            APP_DEBUG: true
+            APP_KEY: KEYGOESHERE
+            APP_LOG: errorlog
+            APP_URL: "http://localhost"
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
+            DB_PORT: 3306
+            DB_DATABASE: homestead
+            DB_USERNAME: homestead
+            DB_PASSWORD: secret
+
+    mysql:
+        image: mysql:5.7
+        volumes:
+            - mysql:/var/lib/mysql
+        ports:
+            # we only expose this port in local dev for using mysql tools/guis on your host
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE:-homestead}
+            MYSQL_USER: ${DB_USERNAME:-homestead}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-secret}
+            
+# using this named volume ensures db's hang around between "up's"
+volumes:
+    mysql:
+
