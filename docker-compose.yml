@@ -25,7 +25,7 @@ services:
         environment:
             APP_NAME: Laravel
             APP_ENV: local
-            APP_DEBUG: true
+            APP_DEBUG: "true"
             APP_KEY: KEYGOESHERE
             APP_LOG: errorlog
             APP_URL: "http://localhost"
