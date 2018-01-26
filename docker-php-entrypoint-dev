@@ -7,6 +7,17 @@ set -e
 # run default entrypoint first
 /usr/local/bin/docker-php-entrypoint
 
+# ensure bind mount permissions are what we need
+chown -R :www-data /var/www/app/cache/ \
+	/var/www/app/bootstrap/cache/ \
+	/var/www/app/public/ \
+	/var/www/app/build/
+
+chmod -R g+w /var/www/app/cache/ \
+	/var/www/app/bootstrap/cache/ \
+	/var/www/app/public/ \
+	/var/www/app/build/
+  
 # run last minute build tools just for local dev
 cd /var/www/app
 composer dump-autoload
