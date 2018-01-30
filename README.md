@@ -23,7 +23,7 @@
 
  - You have Docker and Docker-Compose installed (Docker for Mac, Docker for Windows, get.docker.com and manual Compose installed for Linux).
  - You want to use Docker for local development (i.e. never need to install php or npm on host) and have dev and prod Docker images be as close as possible.
- - You don't want to loose fidelity in your dev workflow. You want a easy environment setup, using local editors, debug/inspect, local code repo, while web server runs in a container.
+ - You don't want to lose fidelity in your dev workflow. You want a easy environment setup, using local editors, debug/inspect, local code repo, while web server runs in a container.
  - You use `docker-compose` for local development only (docker-compose was never intended to be a production deployment tool anyway).
  - The `docker-compose.yml` is not meant for `docker stack deploy` in Docker Swarm, it's meant for happy local development.
 
