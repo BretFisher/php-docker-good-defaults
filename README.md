@@ -4,6 +4,10 @@
 
 **NOTE:** This is not a full PHP sample project. It's a collection of the Docker and Nginx related things you'll need to have this sort of setup fully in Docker. I'm not a PHP/Laravel developer, but rather an ops guy working with many smart PHP dev's. I continue to refine this repo as I work with teams to dev with, test on, and deploy production containers on PHP.
 
+### Contribuitions
+
+This project was made possible in part with support and development from [PrinterLogic](https://www.printerlogic.com/).
+
 ### Local Development Features
 
  - **Dev as close to prod as you can**. docker-compose builds a local development image that is just like production image except for the below dev-only features needed in image. Goal is to have dev env be as close to test and prod as possible while still giving all the nice tools to make you a happy dev.
