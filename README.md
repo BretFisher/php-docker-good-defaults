@@ -4,6 +4,10 @@
 
 **NOTE:** This is not a full PHP sample project. It's a collection of the Docker and Nginx related things you'll need to have this sort of setup fully in Docker. I'm not a PHP/Laravel developer, but rather an ops guy working with many smart PHP dev's. I continue to refine this repo as I work with teams to dev with, test on, and deploy production containers on PHP.
 
+### Contribuitions
+
+This project was made possible in part with support and development from [PrinterLogic](https://www.printerlogic.com/).
+
 ### Local Development Features
 
  - **Dev as close to prod as you can**. docker-compose builds a local development image that is just like production image except for the below dev-only features needed in image. Goal is to have dev env be as close to test and prod as possible while still giving all the nice tools to make you a happy dev.
@@ -24,7 +28,7 @@
 
  - You have Docker and Docker-Compose installed (Docker for Mac, Docker for Windows, get.docker.com and manual Compose installed for Linux).
  - You want to use Docker for local development (i.e. never need to install php or npm on host) and have dev and prod Docker images be as close as possible.
- - You don't want to loose fidelity in your dev workflow. You want a easy environment setup, using local editors, debug/inspect, local code repo, while web server runs in a container.
+ - You don't want to lose fidelity in your dev workflow. You want a easy environment setup, using local editors, debug/inspect, local code repo, while web server runs in a container.
  - You use `docker-compose` for local development only (docker-compose was never intended to be a production deployment tool anyway).
  - The `docker-compose.yml` is not meant for `docker stack deploy` in Docker Swarm, it's meant for happy local development.
 
