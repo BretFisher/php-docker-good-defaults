@@ -1,8 +1,10 @@
 FROM yourdockername/base-php-nginx:latest
 
 # add bitbucket and github to known hosts for ssh needs
-RUN ssh-keyscan -t rsa bitbucket.org >> /root/.ssh/known_hosts \
-    && ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
+WORKDIR /root/.ssh
+RUN chmod 0600 /root/.ssh \
+    && ssh-keyscan -t rsa bitbucket.org >> known_hosts \
+    && ssh-keyscan -t rsa github.com >> known_hosts
 
 ##
 ## Compose Package Manager
@@ -10,7 +12,7 @@ RUN ssh-keyscan -t rsa bitbucket.org >> /root/.ssh/known_hosts \
 
 # install composer dependencies
 WORKDIR /var/www/app
-COPY ./composer.json ./composer.lock ./
+COPY ./composer.json ./composer.lock* ./
 ENV COMPOSER_VENDOR_DIR=/var/www/vendor
 # RUN composer config github-oauth.github.com YOUROAUTHKEYHERE
 RUN composer install --no-scripts --no-autoloader --ansi --no-interaction
@@ -34,15 +36,9 @@ WORKDIR /var/www/app
 ## We Are Go for Bower
 ##
 
-COPY ./bower.json .
-RUN bower install --allow-root
-
-# ensure node can reach our modules
-ENV PATH /var/www/node_modules/.bin:$PATH
-ENV NODE_PATH=/var/www/node_modules
-
-# ensure compose can fine its vendor
-ENV COMPOSER_VENDOR_DIR=/var/www/vendor
+# If you were to use Bower, this might be how to do it
+# COPY ./bower.json .
+# RUN bower install --allow-root
 
 # add custom php-fpm pool settings, these get written at entrypoint startup
 ENV FPM_PM_MAX_CHILDREN=20 \

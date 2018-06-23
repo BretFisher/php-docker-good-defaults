@@ -1,10 +1,10 @@
 FROM php:7.2-fpm
 
 
-ENV COMPOSER_VERSION=1.5.5 \
-    NGINX_VERSION=1.12.2-1~jessie \
-    NJS_VERSION=1.12.2.0.1.14-1~jessie \
-    NODE_VERSION=6.12.1
+ENV COMPOSER_VERSION=1.6.5 \
+    NGINX_VERSION=1.14.0-1~stretch \
+    NJS_VERSION=1.14.0.0.2.0-1~stretch \
+    NODE_VERSION=8.11.3
 
 # this is a sample BASE image, that php_fpm projects can start FROM
 # it's got a lot in it, but it's designed to meet dev and prod needs in single image
@@ -19,11 +19,14 @@ ENV COMPOSER_VERSION=1.5.5 \
 # some of these are not needed in all php projects
 # NOTE: you should prob use specific versions of some of these so you don't break your app
 RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
+    apt-transport-https \
     ca-certificates \
+    openssh-client \
     curl \ 
     dos2unix \
     git \
     gnupg2 \
+    dirmngr \
     g++ \	
     jq \
     libedit-dev \
@@ -33,8 +36,8 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpq-dev \
-    libssl-dev \
-    openssh-client \
+# libssl-dev \
+#    openssh-client \
     supervisor \
     unzip \
     zip \
@@ -73,7 +76,8 @@ RUN NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
 		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; \
 	done; \
 	test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
-	echo "deb http://nginx.org/packages/debian/ jessie nginx" >> /etc/apt/sources.list \
+	echo "deb http://nginx.org/packages/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list \
+	# echo "deb-src http://nginx.org/packages/debian/ stretch nginx" >> /etc/apt/nginx.list \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
 						nginx=${NGINX_VERSION} \
@@ -113,27 +117,28 @@ RUN curl -s -f -L -o /tmp/installer.php https://raw.githubusercontent.com/compos
 # gpg keys listed at https://github.com/nodejs/node#release-team
 RUN set -ex \
   && for key in \
-    9554F04D7259F04124DE6B476D5A82AC7E37093B \
     94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
     FD3A5288F042B6850C66B31F09FE44734EB7990E \
     71DCFD284A79C3B38668286BC97EC7A07EDE3FC1 \
     DD8F2338BAE7501E3DD5AC78C273792F7D83545D \
-    B9AE9905FFD7803F25714661B63B535A4C206CA9 \
     C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8 \
+    B9AE9905FFD7803F25714661B63B535A4C206CA9 \
     56730D5401028683275BD23C23EFEFE93C4CFFFE \
+    77984A986EBC2AA786BC0F66B01FBB92821C587A \
+    8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600 \
   ; do \
-    gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
-    gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" ; \
+    gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" || \
+    gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
+    gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
   done
 
 ENV NPM_CONFIG_LOGLEVEL info
 
-RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
-  && curl -SLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
+RUN curl -fsSLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
+  && curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
   && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
   && grep " node-v$NODE_VERSION-linux-x64.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
-  && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
+  && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 

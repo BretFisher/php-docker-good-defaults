@@ -1,0 +1,19 @@
+{
+  "name": "php-docker-good-defaults",
+  "version": "1.0.0",
+  "description": "sample npm config",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BretFisher/php-docker-good-defaults.git"
+  },
+  "author": "Bret Fisher",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BretFisher/php-docker-good-defaults/issues"
+  },
+  "homepage": "https://github.com/BretFisher/php-docker-good-defaults#readme"
+}

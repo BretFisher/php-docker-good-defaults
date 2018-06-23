@@ -1,0 +1,7 @@
+{
+    "name": "bretfisher/php-docker-good-defaults",
+    "description": "Sample composer config",
+    "require": {
+        "monolog/monolog": "1.0.*"
+    }
+}
