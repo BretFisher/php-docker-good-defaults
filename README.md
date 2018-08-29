@@ -40,7 +40,7 @@ If this was your app, to start local development you would:
  - Running `docker-compose up` is all you need. It will:
  - Build custom local image enabled for development.
  - Start container from that image with ports 80, 443, 9000, and 9001 open (on localhost or docker-machine).
- - Mounts the pwd to the app dir in container.
+ - Mount the pwd to the app dir in container.
  - If you need other services like databases, just add to compose file and they'll be added to the custom Docker network for this app on `up`.
  - If you need to add packages to Composer, npm, bower, etc. then stop docker-compose and run `docker-compose up --build` to ensure image is updated.
  - Be sure to use `docker-compose down` to cleanup after your done dev'ing.
