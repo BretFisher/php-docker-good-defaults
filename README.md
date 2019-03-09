@@ -4,6 +4,8 @@
 
 **NOTE:** This is not a full PHP sample project. It's a collection of the Docker and Nginx related things you'll need to have this sort of setup fully in Docker. I'm not a PHP/Laravel developer, but rather an ops guy working with many smart PHP dev's. I continue to refine this repo as I work with teams to dev with, test on, and deploy production containers on PHP.
 
+Also Note [I have courses on Docker, Swarm, and upcoming Docker for Node.js here](https://www.bretfisher.com/docker).
+
 ### Contribuitions
 
 This project was made possible in part with support and development from [PrinterLogic](https://www.printerlogic.com/).
