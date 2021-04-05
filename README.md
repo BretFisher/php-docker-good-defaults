@@ -6,6 +6,10 @@
 
 Also Note [I have courses on Docker, Swarm, and upcoming Docker for Node.js here](https://www.bretfisher.com/docker).
 
+### Official Laravel Docker Environment
+
+As of version 8 of Laravel there is an offically supported Docker development environment called 'Sail'.  If you are specifically doing Laravel development you may want to check it out at [the Laravel website](https://laravel.com/docs/sail).
+
 ### Contribuitions
 
 This project was made possible in part with support and development from [PrinterLogic](https://www.printerlogic.com/).
