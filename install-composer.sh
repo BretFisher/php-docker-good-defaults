@@ -11,6 +11,6 @@ then
     exit 1 
 fi 
 
-php /tmp/composer-setup.php --no-ansi --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} \
+php /tmp/composer-setup.php --no-ansi --install-dir=/usr/bin --filename=composer \
  && rm /tmp/composer-setup.php \
  && composer --ansi --version --no-interaction
